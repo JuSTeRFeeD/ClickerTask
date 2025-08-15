@@ -102,7 +102,7 @@ namespace Project.Scripts.ECS.Views
 
         private void Update()
         {
-            if (_entity.Has<IncomeProgress>())
+            if (_entity.Has<BusinessUnlocked>())
             {
                 ref readonly var progress = ref _entity.Get<IncomeProgress>();
                 _progressFill.fillAmount = progress.ProgressTime / progress.IncomeDelay;

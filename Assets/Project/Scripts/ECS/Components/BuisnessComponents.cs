@@ -9,6 +9,8 @@ namespace Project.Scripts.ECS.Components
         public float BaseIncome;
         public BusinessUpgradeData[] Upgrades;
     }
+    
+    public struct BusinessUnlocked : IEcsIgnoreInFilter { }
 
     public struct BusinessUpgradeData
     {

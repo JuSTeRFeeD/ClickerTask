@@ -1,9 +1,10 @@
 using Leopotam.Ecs;
 using Project.Scripts.ECS.Components;
+using Project.Scripts.ECS.Systems;
 using Project.Scripts.ECS.Systems.Business;
 using Project.Scripts.ECS.Systems.Business.Upgrades;
 using Project.Scripts.ECS.Systems.Player;
-using Project.Scripts.PlayerData;
+using Project.Scripts.Save;
 using Project.Scripts.Scriptable;
 using Project.Scripts.UI;
 using UnityEngine;
@@ -17,18 +18,19 @@ namespace Project.Scripts.ECS
 
         private EcsWorld _world;
         private EcsSystems _systems;
-        
-        private ProgressSave _progressSave = new();
+
+        private PlayerProgress _playerProgress;
 
         private void Start()
         {
+            _playerProgress = SaveLoad.Load();
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
-            var balanceEntity = InitBalanceEntity();
+            var balanceEntity = InitBalanceEntity(_playerProgress?.PlayerBalance ?? 0);
 
             _systems
-                .Add(new InitBusinessesSystem(_progressSave, _gameConfig, _uiManager))
+                .Add(new InitBusinessesSystem(_playerProgress, _gameConfig, _uiManager))
                 .Add(new BusinessProgressSystem())
                 .Add(new GiveIncomeSystem(balanceEntity))
                 
@@ -38,6 +40,8 @@ namespace Project.Scripts.ECS
                 
                 .Add(new UIBalanceUpdateSystem(_uiManager.BalanceDisplay))
                 .Add(new UIBusinessUpdateSystem(_uiManager))
+                
+                .Add(new SaveSystem(balanceEntity))
             ;
 
             _systems
@@ -50,10 +54,10 @@ namespace Project.Scripts.ECS
             _systems.Init();
         }
 
-        private EcsEntity InitBalanceEntity()
+        private EcsEntity InitBalanceEntity(int initialBalance)
         {
             var balanceEntity = _world.NewEntity();
-            balanceEntity.Get<PlayerBalance>().Value = 0;
+            balanceEntity.Get<PlayerBalance>().Value = initialBalance;
             balanceEntity.Get<BalanceChangedOneFrame>();
             return balanceEntity;
         }

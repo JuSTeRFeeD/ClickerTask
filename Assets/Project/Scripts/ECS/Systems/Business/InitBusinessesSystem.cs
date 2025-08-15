@@ -1,6 +1,7 @@
+using System.Linq;
 using Leopotam.Ecs;
 using Project.Scripts.ECS.Components;
-using Project.Scripts.PlayerData;
+using Project.Scripts.Save;
 using Project.Scripts.Scriptable;
 using Project.Scripts.UI;
 
@@ -8,18 +9,18 @@ namespace Project.Scripts.ECS.Systems.Business
 {
     public class InitBusinessesSystem : IEcsInitSystem
     {
-        private readonly ProgressSave _progressSave;
+        private readonly PlayerProgress _playerProgress;
         private readonly GameConfig _gameConfig;
         private readonly UIManager _uiManager;
 
         private EcsWorld _world;
 
         public InitBusinessesSystem(
-            ProgressSave progressSave, 
+            PlayerProgress playerProgress, 
             GameConfig gameConfig,
             UIManager uiManager
         ) {
-            _progressSave = progressSave;
+            _playerProgress = playerProgress;
             _gameConfig = gameConfig;
             _uiManager = uiManager;
         }
@@ -31,43 +32,51 @@ namespace Project.Scripts.ECS.Systems.Business
                 var config = _gameConfig.Businesses[index];
                 var businessEntity = _world.NewEntity();
 
+                var saved = _playerProgress.Businesses.FirstOrDefault(i => i.Id == config.Id);
+
                 var upgrades = new BusinessUpgradeData[config.Upgrades.Length];
                 for (var i = 0; i < upgrades.Length; i++)
                 {
                     var businessUpgradeConfig = config.Upgrades[i];
+                    var isUnlocked = false;
+                    if (saved != null)
+                    {
+                        isUnlocked = saved.UpgradesStatus[i];
+                    }
+                    
                     upgrades[i] = new BusinessUpgradeData
                     {
                         Price = businessUpgradeConfig.Price,
                         IncomeMultiplier = businessUpgradeConfig.IncomeMultiplier,
-                        IsUnlocked = false
+                        IsUnlocked = isUnlocked
                     };
                 }
 
-                if (index == 0)
+                var level = index == 0 ? 1 : 0;
+                var progressTime = 0f;
+                if (saved != null)
                 {
-                    businessEntity.Replace(new BusinessData
-                    {
-                        BusinessId = config.Id,
-                        Level = 1,
-                        BaseIncome = config.BaseIncome,
-                        Upgrades = upgrades,
-                    });
-                    
-                    businessEntity.Replace(new IncomeProgress
-                    {
-                        IncomeDelay = config.IncomeDelaySeconds,
-                        ProgressTime = 0
-                    });
+                    level = saved.Level;
+                    progressTime = saved.IncomeProgress;
                 }
-                else
+                
+                businessEntity.Replace(new BusinessData
                 {
-                    businessEntity.Replace(new BusinessData
-                    {
-                        BusinessId = config.Id,
-                        Level = 0,
-                        BaseIncome = config.BaseIncome,
-                        Upgrades = upgrades
-                    });
+                    BusinessId = config.Id,
+                    Level = level,
+                    BaseIncome = config.BaseIncome,
+                    Upgrades = upgrades,
+                });
+                    
+                businessEntity.Replace(new IncomeProgress
+                {
+                    IncomeDelay = config.IncomeDelaySeconds,
+                    ProgressTime = progressTime
+                });
+
+                if (level > 0)
+                {
+                    businessEntity.Get<BusinessUnlocked>();
                 }
                 
                 _uiManager.SpawnBusinessView(config, businessEntity);
