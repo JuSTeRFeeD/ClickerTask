@@ -24,17 +24,7 @@ namespace Project.Scripts.ECS.Systems.Business.Upgrades
                 
                 ref readonly var entity = ref _filter.GetEntity(i);
                 entity.Get<BusinessUpdateInfoOneFrame>();
-
-                if (!entity.Has<IncomeProgress>())
-                {
-                    var config = _gameConfig.GetBusinessById(businessData.BusinessId);
-
-                    entity.Replace(new IncomeProgress
-                    {
-                        ProgressTime = 0f,
-                        IncomeDelay = config.IncomeDelaySeconds
-                    });
-                }
+                entity.Get<BusinessUnlocked>();
             }
         }
     }

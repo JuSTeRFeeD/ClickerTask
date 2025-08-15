@@ -33,24 +33,19 @@ namespace Project.Scripts.ECS
                 .Add(new InitBusinessesSystem(_playerProgress, _gameConfig, _uiManager))
                 .Add(new BusinessProgressSystem())
                 .Add(new GiveIncomeSystem(balanceEntity))
-                
                 .Add(new HandleLevelUpBusinessSystem(balanceEntity, _gameConfig))
                 .Add(new LevelUpBusinessSystem(_gameConfig))
                 .Add(new HandleUpgradeBusinessSystem(balanceEntity))
-                
                 .Add(new UIBalanceUpdateSystem(_uiManager.BalanceDisplay))
                 .Add(new UIBusinessUpdateSystem(_uiManager))
-                
-                .Add(new SaveSystem(balanceEntity))
-            ;
+                .Add(new SaveSystem(balanceEntity));
 
             _systems
                 .OneFrame<GiveIncomeOneFrame>()
                 .OneFrame<BalanceChangedOneFrame>()
                 .OneFrame<BuyBusinessLevelUpOneFrame>()
-                .OneFrame<LevelUpBusinessOneFrame>()
-            ;
-                
+                .OneFrame<LevelUpBusinessOneFrame>();
+
             _systems.Init();
         }
 

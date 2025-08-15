@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 5
   _title: "\u0411\u0438\u0437\u043D\u0435\u0441 5"
-  _basePrice: 10000
+  _basePrice: 5000
   _baseIncome: 5000
   _incomeDelaySeconds: 30
   _upgrades:

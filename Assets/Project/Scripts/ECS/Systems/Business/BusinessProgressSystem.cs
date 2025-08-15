@@ -6,7 +6,7 @@ namespace Project.Scripts.ECS.Systems.Business
 {
     public class BusinessProgressSystem : IEcsRunSystem
     {
-        private EcsFilter<IncomeProgress> _filter;
+        private EcsFilter<IncomeProgress, BusinessUnlocked> _filter;
 
         public void Run()
         {

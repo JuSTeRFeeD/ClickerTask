@@ -24,7 +24,7 @@ namespace Project.Scripts.Scriptable
 
         public int GetLevelUpPrice(int curLevel)
         {
-            return _baseIncome * (curLevel + 1);
+            return BasePrice * (curLevel + 1);
         }
     }
 }

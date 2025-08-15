@@ -32,16 +32,16 @@ namespace Project.Scripts.ECS.Systems.Business
                 var config = _gameConfig.Businesses[index];
                 var businessEntity = _world.NewEntity();
 
-                var saved = _playerProgress.Businesses.FirstOrDefault(i => i.Id == config.Id);
+                var loadedBusiness = _playerProgress.Businesses.FirstOrDefault(i => i.Id == config.Id);
 
                 var upgrades = new BusinessUpgradeData[config.Upgrades.Length];
                 for (var i = 0; i < upgrades.Length; i++)
                 {
                     var businessUpgradeConfig = config.Upgrades[i];
                     var isUnlocked = false;
-                    if (saved != null)
+                    if (loadedBusiness != null)
                     {
-                        isUnlocked = saved.UpgradesStatus[i];
+                        isUnlocked = loadedBusiness.UpgradesStatus[i];
                     }
                     
                     upgrades[i] = new BusinessUpgradeData
@@ -54,10 +54,10 @@ namespace Project.Scripts.ECS.Systems.Business
 
                 var level = index == 0 ? 1 : 0;
                 var progressTime = 0f;
-                if (saved != null)
+                if (loadedBusiness != null)
                 {
-                    level = saved.Level;
-                    progressTime = saved.IncomeProgress;
+                    level = loadedBusiness.Level;
+                    progressTime = loadedBusiness.IncomeProgress;
                 }
                 
                 businessEntity.Replace(new BusinessData

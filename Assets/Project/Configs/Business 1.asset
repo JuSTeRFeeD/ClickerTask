@@ -15,8 +15,8 @@ MonoBehaviour:
   _id: 1
   _title: "\u0411\u0438\u0437\u043D\u0435\u0441 1"
   _basePrice: 3
-  _baseIncome: 10
-  _incomeDelaySeconds: 1
+  _baseIncome: 3
+  _incomeDelaySeconds: 3
   _upgrades:
   - _title: "\u0423\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u0435 1"
     _price: 50
