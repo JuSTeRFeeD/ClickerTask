@@ -1,6 +1,5 @@
 using Leopotam.Ecs;
 using Project.Scripts.ECS.Components;
-using Project.Scripts.ECS.Systems;
 using Project.Scripts.ECS.Systems.Business;
 using Project.Scripts.ECS.Systems.Business.Upgrades;
 using Project.Scripts.ECS.Systems.Player;
@@ -18,8 +17,7 @@ namespace Project.Scripts.ECS
 
         private EcsWorld _world;
         private EcsSystems _systems;
-
-        // TODO: move out scope
+        
         private ProgressSave _progressSave = new();
 
         private void Start()
@@ -36,6 +34,7 @@ namespace Project.Scripts.ECS
                 
                 .Add(new HandleLevelUpBusinessSystem(balanceEntity, _gameConfig))
                 .Add(new LevelUpBusinessSystem(_gameConfig))
+                .Add(new HandleUpgradeBusinessSystem(balanceEntity))
                 
                 .Add(new UIBalanceUpdateSystem(_uiManager.BalanceDisplay))
                 .Add(new UIBusinessUpdateSystem(_uiManager))

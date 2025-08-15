@@ -23,7 +23,7 @@ namespace Project.Scripts.ECS.Systems.Business
                 
                 progress.ProgressTime = 0;
 
-                ref var entity = ref _filter.GetEntity(i);
+                ref readonly var entity = ref _filter.GetEntity(i);
                 entity.Get<GiveIncomeOneFrame>();
             }
         }

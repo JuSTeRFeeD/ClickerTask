@@ -22,7 +22,7 @@ namespace Project.Scripts.ECS.Systems.Business.Upgrades
                 ref var businessData = ref _filter.Get1(i);
                 businessData.Level++;
                 
-                ref var entity = ref _filter.GetEntity(i);
+                ref readonly var entity = ref _filter.GetEntity(i);
                 entity.Get<BusinessUpdateInfoOneFrame>();
 
                 if (!entity.Has<IncomeProgress>())

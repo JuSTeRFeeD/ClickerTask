@@ -20,7 +20,7 @@ MonoBehaviour:
   _upgrades:
   - _title: "\u0423\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u0435 1"
     _price: 6000
-    _incomeMultiplierPercent: 1
+    _incomeMultiplier: 1
   - _title: "\u0423\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u0435 2"
     _price: 20000
-    _incomeMultiplierPercent: 1.5
+    _incomeMultiplier: 1.5

@@ -22,7 +22,7 @@ namespace Project.Scripts.ECS.Systems.Business.Upgrades
             ref var balance = ref _balanceEntity.Get<PlayerBalance>();
             foreach (var i in _filter)
             {
-                ref var businessData = ref _filter.Get1(i);
+                ref readonly var businessData = ref _filter.Get1(i);
                 var config = _gameConfig.GetBusinessById(businessData.BusinessId);
                 if (!config)
                 {
@@ -38,7 +38,7 @@ namespace Project.Scripts.ECS.Systems.Business.Upgrades
                 balance.Value -= cost;
                 _balanceEntity.Get<BalanceChangedOneFrame>();
                 
-                ref var entity = ref _filter.GetEntity(i);
+                ref readonly var entity = ref _filter.GetEntity(i);
                 entity.Get<LevelUpBusinessOneFrame>();
             }
         }

@@ -31,6 +31,18 @@ namespace Project.Scripts.ECS.Systems.Business
                 var config = _gameConfig.Businesses[index];
                 var businessEntity = _world.NewEntity();
 
+                var upgrades = new BusinessUpgradeData[config.Upgrades.Length];
+                for (var i = 0; i < upgrades.Length; i++)
+                {
+                    var businessUpgradeConfig = config.Upgrades[i];
+                    upgrades[i] = new BusinessUpgradeData
+                    {
+                        Price = businessUpgradeConfig.Price,
+                        IncomeMultiplier = businessUpgradeConfig.IncomeMultiplier,
+                        IsUnlocked = false
+                    };
+                }
+
                 if (index == 0)
                 {
                     businessEntity.Replace(new BusinessData
@@ -38,7 +50,7 @@ namespace Project.Scripts.ECS.Systems.Business
                         BusinessId = config.Id,
                         Level = 1,
                         BaseIncome = config.BaseIncome,
-                        IncomeMultiplier = 0f,
+                        Upgrades = upgrades,
                     });
                     
                     businessEntity.Replace(new IncomeProgress
@@ -54,7 +66,7 @@ namespace Project.Scripts.ECS.Systems.Business
                         BusinessId = config.Id,
                         Level = 0,
                         BaseIncome = config.BaseIncome,
-                        IncomeMultiplier = 0f,
+                        Upgrades = upgrades
                     });
                 }
                 

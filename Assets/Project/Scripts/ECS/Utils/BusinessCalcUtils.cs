@@ -6,7 +6,15 @@ namespace Project.Scripts.ECS.Utils
     {
         public static int CalculateIncome(in BusinessData businessData)
         {
-            return (int)(businessData.Level * businessData.BaseIncome * (1 + businessData.IncomeMultiplier));
+            var upgradesMultiplier = 1f;
+            foreach (var upgrade in businessData.Upgrades)
+            {
+                if (upgrade.IsUnlocked)
+                {
+                    upgradesMultiplier += upgrade.IncomeMultiplier;
+                }
+            }
+            return (int)(businessData.Level * businessData.BaseIncome * upgradesMultiplier);
         }
     }
 }

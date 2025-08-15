@@ -1,7 +1,6 @@
 using Leopotam.Ecs;
 using Project.Scripts.ECS.Components;
 using Project.Scripts.ECS.Utils;
-using UnityEngine;
 
 namespace Project.Scripts.ECS.Systems.Business
 {

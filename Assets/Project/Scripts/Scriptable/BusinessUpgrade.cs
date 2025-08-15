@@ -7,10 +7,10 @@ namespace Project.Scripts.Scriptable
     {
         [SerializeField] private string _title;
         [SerializeField] private int _price;
-        [SerializeField] private float _incomeMultiplierPercent = 0f;
+        [SerializeField] private float _incomeMultiplier = 0f;
         
         public string Title => _title;
         public int Price => _price;
-        public float IncomeMultiplierPercent => _incomeMultiplierPercent;
+        public float IncomeMultiplier => _incomeMultiplier;
     }
 }

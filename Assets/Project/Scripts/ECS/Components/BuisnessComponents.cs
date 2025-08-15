@@ -7,6 +7,13 @@ namespace Project.Scripts.ECS.Components
         public int BusinessId;
         public int Level;
         public float BaseIncome;
+        public BusinessUpgradeData[] Upgrades;
+    }
+
+    public struct BusinessUpgradeData
+    {
+        public bool IsUnlocked;
+        public int Price;
         public float IncomeMultiplier;
     }
 
@@ -14,6 +21,11 @@ namespace Project.Scripts.ECS.Components
     {
         public float ProgressTime;
         public float IncomeDelay;
+    }
+
+    public struct BuyBusinessUpgrade
+    {
+        public int UpgradeIndex;
     }
 
     public struct GiveIncomeOneFrame : IEcsIgnoreInFilter { }
