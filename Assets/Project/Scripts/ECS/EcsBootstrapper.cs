@@ -1,3 +1,4 @@
+using System;
 using Leopotam.Ecs;
 using Project.Scripts.ECS.Components;
 using Project.Scripts.ECS.Systems;
@@ -18,17 +19,20 @@ namespace Project.Scripts.ECS
 
         private EcsWorld _world;
         private EcsSystems _systems;
-
+        private SaveSystem _saveSystem;
         private PlayerProgress _playerProgress;
 
         private void Start()
         {
+            Application.targetFrameRate = 60;
+            
             _playerProgress = SaveLoad.Load();
             _world = new EcsWorld();
             _systems = new EcsSystems(_world);
 
             var balanceEntity = InitBalanceEntity(_playerProgress?.PlayerBalance ?? 0);
 
+            _saveSystem = new SaveSystem(balanceEntity);
             _systems
                 .Add(new InitBusinessesSystem(_playerProgress, _gameConfig, _uiManager))
                 .Add(new BusinessProgressSystem())
@@ -38,7 +42,7 @@ namespace Project.Scripts.ECS
                 .Add(new HandleUpgradeBusinessSystem(balanceEntity))
                 .Add(new UIBalanceUpdateSystem(_uiManager.BalanceDisplay))
                 .Add(new UIBusinessUpdateSystem(_uiManager))
-                .Add(new SaveSystem(balanceEntity));
+                .Add(_saveSystem);
 
             _systems
                 .OneFrame<GiveIncomeOneFrame>()
@@ -66,6 +70,14 @@ namespace Project.Scripts.ECS
         {
             _systems.Destroy();
             _world.Destroy();
+        }
+
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+            {
+                _saveSystem.Save();
+            }
         }
     }
 }

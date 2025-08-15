@@ -18,6 +18,11 @@ namespace Project.Scripts.ECS.Systems
         
         public void Destroy()
         {
+            Save();
+        }
+
+        public void Save()
+        {
             var businesses = new List<BusinessSaveData>();
             foreach (var i in _filter)
             {
